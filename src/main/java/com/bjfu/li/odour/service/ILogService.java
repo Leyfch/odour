@@ -1,6 +1,6 @@
 package com.bjfu.li.odour.service;
 
-import com.bjfu.li.odour.entity.Log;
+import com.bjfu.li.odour.po.Log;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bjfu.li.odour.vo.LogVo;
 

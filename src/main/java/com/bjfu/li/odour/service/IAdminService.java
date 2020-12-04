@@ -1,6 +1,6 @@
 package com.bjfu.li.odour.service;
 
-import com.bjfu.li.odour.entity.Admin;
+import com.bjfu.li.odour.po.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.io.UnsupportedEncodingException;

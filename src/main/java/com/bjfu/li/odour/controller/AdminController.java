@@ -4,7 +4,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bjfu.li.odour.common.pojo.SverResponse;
 import com.bjfu.li.odour.common.token.JWTUtils;
-import com.bjfu.li.odour.entity.Admin;
+import com.bjfu.li.odour.po.Admin;
 import com.bjfu.li.odour.service.impl.AdminServiceImpl;
 import com.bjfu.li.odour.utils.MD5Utils;
 import com.bjfu.li.odour.vo.DownloadFileVo;
@@ -36,7 +36,7 @@ public class AdminController {
     @Resource
     AdminServiceImpl adminService;
 
-    @Value("${raw-file-dir}")
+    @Value("${rawFileDir}")
     String rawFileDir;
 
     /**
@@ -53,8 +53,7 @@ public class AdminController {
         if(adminId!=null) {
             UpdateWrapper<Admin> updateWrapper=new UpdateWrapper<>();
             updateWrapper.set("last_login_time",LocalDateTime.now())
-                    .eq("account",account)
-                    .eq("is_deleted",0);
+                    .eq("account",account);
             adminService.update(updateWrapper);
 
             Map<String, String> payload = new HashMap<>();
@@ -83,8 +82,7 @@ public class AdminController {
                 MD5Utils.MD5Encode(password,"UTF-8",false),
                 1,
                 LocalDateTime.now(),
-                null,
-                0);
+                null);
         adminService.save(admin);
         admin.setPassword(null);
         return SverResponse.createRespBySuccess(admin);
@@ -96,6 +94,13 @@ public class AdminController {
         return SverResponse.createRespBySuccess(admins);
     }
 
+    /**
+     *
+     * @param newPassword 新密码
+     * @param request
+     * @return
+     * @throws UnsupportedEncodingException 编码错误
+     */
     @PostMapping("/password")
     public SverResponse<String> changePassword(@RequestParam String newPassword, HttpServletRequest request) throws UnsupportedEncodingException {
         String token= request.getHeader("Authorization");
@@ -108,6 +113,10 @@ public class AdminController {
         return SverResponse.createRespBySuccess();
     }
 
+    /**
+     *
+     * @return 所有可下载资源链接
+     */
     @GetMapping("/file")
     public SverResponse<List<DownloadFileVo>> getFileList(){
         List<DownloadFileVo> files=new ArrayList<>();
@@ -116,7 +125,7 @@ public class AdminController {
         if(fileList!=null) {
             for (File file : fileList) {
                 if(file.isFile()) {
-                    String filePath="/data/download/"+file.getName();
+                    String filePath="/resource/download/"+file.getName();
                     files.add(new DownloadFileVo(filePath,file.getName()));
                 }
             }

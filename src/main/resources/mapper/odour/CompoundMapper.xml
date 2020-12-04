@@ -2,4 +2,118 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bjfu.li.odour.mapper.CompoundMapper">
 
+    <resultMap id="CompoundRiMap" type="com.bjfu.li.odour.po.Compound">
+        <id column="id" property="id"/>
+        <result column="compound_name" property="compoundName" />
+        <result column="synonym" property="synonym"/>
+        <result column="cas_no" property="casNo"/>
+        <result column="odour_threshold" property="odourThreshold"/>
+        <result column="odour_threshold_reference" property="odourThresholdReference"/>
+        <result column="odour_description" property="odourDescription"/>
+        <result column="odour_description_reference" property="odourDescriptionReference"/>
+        <result column="chemical_structure" property="chemicalStructure"/>
+        <result column="mass_spectrogram" property="massSpectrogram"/>
+        <result column="mass_spectrogram_Nist" property="massSpectrogramNist"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <collection property="riList" javaType="ArrayList" ofType="com.bjfu.li.odour.po.Ri">
+            <id column="rid" property="id"/>
+            <result column="compound_ri" property="compoundRi"/>
+            <result column="chromatographic_column" property="chromatographicColumn"/>
+            <result column="compound_id" property="compoundId"/>
+        </collection>
+        <collection property="mrList" javaType="ArrayList" ofType="com.bjfu.li.odour.po.MR">
+            <id column="mrid" property="id"/>
+            <result column="measured" property="measured"/>
+            <result column="relative_abundance" property="relativeAbundance"/>
+            <result column="compound_id" property="compoundId"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectByRi" resultMap="CompoundRiMap" >
+        select c.*,
+            ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
+            mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
+        from compound as c,ri,m_r as mr
+        where c.id=ri.compound_id
+        and c.id=mr.compound_id
+        and c.id in (
+            select ri.compound_id
+            from ri
+            where (ri.compound_ri between #{low} and #{high})
+        )
+    </select>
+
+    <select id="selectByMeasured" resultMap="CompoundRiMap" >
+        select c.*,
+            ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
+            mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
+        from compound as c,ri,m_r as mr
+        where c.id=ri.compound_id
+        and c.id=mr.compound_id
+        and c.id in (
+            select mr.compound_id
+            from m_r
+            where (mr.measured between #{low} and #{high})
+        )
+    </select>
+
+    <select id="selectAll" resultMap="CompoundRiMap">
+        select c.*,
+            ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
+            mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
+        from compound as c,ri,m_r as mr
+        where c.id=ri.compound_id
+        and c.id=mr.compound_id
+    </select>
+
+    <select id="selectByCompoundName" resultMap="CompoundRiMap">
+        select c.*,
+            ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
+            mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
+        from compound as c,ri,m_r as mr
+        where c.id=ri.compound_id
+        and c.id=mr.compound_id
+        and (compound_name like "%"#{name}"%" or synonym like "%"#{name}"%")
+    </select>
+
+    <select id="selectByCasNo" resultMap="CompoundRiMap">
+        select c.*,
+            ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
+            mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
+        from compound as c,ri,m_r as mr
+        where c.id=ri.compound_id
+        and c.id=mr.compound_id
+        and cas_no=#{casNo}
+    </select>
+
+    <select id="selectByOdourDescription" resultMap="CompoundRiMap">
+        select c.*,
+        ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
+        mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
+        from compound as c,ri,m_r as mr
+        where c.id=ri.compound_id
+        and c.id=mr.compound_id
+        <foreach collection="array" item="description" index="index"  separator=" " >
+            and odour_description like "%"#{description}"%"
+        </foreach>
+    </select>
+
+    <select id="selectByProperties" resultMap="CompoundRiMap"  parameterType="map">
+        select c.*,ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id
+        from compound as c,ri,m_r as mr
+        where c.id=ri.compound_id
+        <if test="_parameter.containsKey('compound_name')">
+            and (compound_name like "%"#{compound_name}"%" or synonym like "%"#{compound_name}"%")
+        </if>
+        <if test="_parameter.containsKey('cas_no')">
+            and cas_no=#{cas_no}
+        </if>
+        <if test="_parameter.containsKey('compound_ri')">
+            and (ri.compound_ri between #{compound_ri}-100  and #{compound_ri}+100)
+        </if>
+        <if test="_parameter.containsKey('measured')">
+            and (mr.measured between #{measured}-100  and #{measured}+100)
+        </if>
+    </select>
 </mapper>

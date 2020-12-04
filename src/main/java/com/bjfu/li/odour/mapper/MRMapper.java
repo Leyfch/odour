@@ -1,6 +1,6 @@
 package com.bjfu.li.odour.mapper;
 
-import com.bjfu.li.odour.po.Admin;
+import com.bjfu.li.odour.po.MR;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author li
- * @since 2020-11-06
+ * @since 2020-12-03
  */
-public interface AdminMapper extends BaseMapper<Admin> {
+public interface MRMapper extends BaseMapper<MR> {
 
 }

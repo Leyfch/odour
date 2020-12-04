@@ -1,6 +1,6 @@
 package com.bjfu.li.odour.service;
 
-import com.bjfu.li.odour.po.City;
+import com.bjfu.li.odour.po.Ri;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author li
- * @since 2020-11-21
+ * @since 2020-11-26
  */
-public interface ICityService extends IService<City> {
+public interface IRiService extends IService<Ri> {
 
 }

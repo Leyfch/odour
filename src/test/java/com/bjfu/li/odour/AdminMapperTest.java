@@ -1,6 +1,6 @@
 package com.bjfu.li.odour;
 
-import com.bjfu.li.odour.entity.Admin;
+import com.bjfu.li.odour.po.Admin;
 import com.bjfu.li.odour.mapper.AdminMapper;
 import com.bjfu.li.odour.utils.MD5Utils;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +23,7 @@ public class AdminMapperTest {
                 "admin02",
                 MD5Utils.MD5Encode("123456","UTF-8",false),
                 0, LocalDateTime.now(),
-                null,
-                0);
+                null);
         adminMapper.insert(admin);
         log.info(admin.toString());
     }

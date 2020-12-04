@@ -2,7 +2,7 @@ package com.bjfu.li.odour.controller;
 
 
 import com.bjfu.li.odour.common.pojo.SverResponse;
-import com.bjfu.li.odour.entity.City;
+import com.bjfu.li.odour.po.City;
 import com.bjfu.li.odour.service.impl.CityServiceImpl;
 import org.springframework.web.bind.annotation.*;
 

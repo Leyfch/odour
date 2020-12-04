@@ -1,6 +1,6 @@
 package com.bjfu.li.odour.service;
 
-import com.bjfu.li.odour.entity.Compound;
+import com.bjfu.li.odour.po.Compound;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;

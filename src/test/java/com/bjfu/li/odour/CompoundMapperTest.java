@@ -1,7 +1,7 @@
 package com.bjfu.li.odour;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.bjfu.li.odour.entity.Compound;
+import com.bjfu.li.odour.po.Compound;
 import com.bjfu.li.odour.mapper.CompoundMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -25,12 +25,21 @@ public class CompoundMapperTest {
     }
 
     @Test
+    void searchCompoundTest(){
+        String description="aaa,shi";
+        List<Compound> compounds=compoundMapper.selectByOdourDescription(description.split(","));
+        System.out.println(compounds);
+    }
+
+    @Test
     void advancedSearchTest(){
         QueryWrapper<Compound> compoundQueryWrapper=new QueryWrapper<>();
-        compoundQueryWrapper.and(wrapper->wrapper
-                .like("compound_name","1-Octen-3-one")
-                .or()
-                .like("synonym","1-Octen-3-one"));
-        System.out.println(compoundMapper.selectList(compoundQueryWrapper));
+        compoundQueryWrapper
+                .like("odour_description","fatty");
+        List<Compound> compounds=compoundMapper.selectList(compoundQueryWrapper);
+        System.out.println(compounds.size());
+        for(Compound c:compounds){
+            System.out.println(c.getOdourDescription());
+        }
     }
 }

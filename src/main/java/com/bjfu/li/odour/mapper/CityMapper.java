@@ -1,6 +1,6 @@
 package com.bjfu.li.odour.mapper;
 
-import com.bjfu.li.odour.entity.City;
+import com.bjfu.li.odour.po.City;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

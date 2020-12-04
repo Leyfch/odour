@@ -1,6 +1,6 @@
 package com.bjfu.li.odour.service.impl;
 
-import com.bjfu.li.odour.entity.City;
+import com.bjfu.li.odour.po.City;
 import com.bjfu.li.odour.mapper.CityMapper;
 import com.bjfu.li.odour.service.ICityService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

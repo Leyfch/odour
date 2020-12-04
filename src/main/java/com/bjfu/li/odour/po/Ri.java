@@ -1,13 +1,14 @@
-package com.bjfu.li.odour.entity;
+package com.bjfu.li.odour.po;
 
+import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
@@ -15,25 +16,24 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author li
- * @since 2020-11-21
+ * @since 2020-11-26
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class City implements Serializable {
+public class Ri implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private String cip;
+    private Integer compoundRi;
 
-    private Integer cid;
+    private String chromatographicColumn;
 
-    private String cname;
-
-    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime visitTime;
+    private Integer compoundId;
 
 
 }

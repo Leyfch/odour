@@ -1,7 +1,7 @@
 package com.bjfu.li.odour.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.bjfu.li.odour.entity.Admin;
+import com.bjfu.li.odour.po.Admin;
 import com.bjfu.li.odour.mapper.AdminMapper;
 import com.bjfu.li.odour.service.IAdminService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -26,7 +26,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     public Integer loginCheck(String account, String password) throws UnsupportedEncodingException {
         QueryWrapper<Admin> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("is_deleted",0).eq("account",account);
+        queryWrapper.eq("account",account);
         Admin admin=adminMapper.selectOne(queryWrapper);
         if(admin==null)
             return null;

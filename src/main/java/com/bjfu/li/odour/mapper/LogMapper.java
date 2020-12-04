@@ -1,6 +1,6 @@
 package com.bjfu.li.odour.mapper;
 
-import com.bjfu.li.odour.entity.Log;
+import com.bjfu.li.odour.po.Log;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bjfu.li.odour.vo.LogVo;
 import org.apache.ibatis.annotations.Select;
