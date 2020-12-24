@@ -11,22 +11,8 @@ import javax.annotation.Resource;
 @SpringBootTest
 class OdourApplicationTests {
 
-    @Resource
-    RiMapper riMapper;
-
     @Test
     void contextLoads() {
-    }
-
-    @Test
-    void RiMapperTest(){
-        QueryWrapper<Ri> RiQueryWrapper=new QueryWrapper<>();
-        double ri=Double.parseDouble("1270");
-        RiQueryWrapper.ge("compound_ri",ri-100)
-                .le("compound_ri",ri+100)
-                .groupBy("compound_id");
-        System.out.println(riMapper.selectList(RiQueryWrapper));
-
     }
 
 }

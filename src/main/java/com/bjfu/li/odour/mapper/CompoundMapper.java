@@ -18,7 +18,10 @@ import java.util.Map;
  */
 public interface CompoundMapper extends BaseMapper<Compound> {
 
+    Compound selectOne(@Param("id") int id);
+
     @Select("select * from compound " +
+            "where is_deleted=0 " +
             "order by update_time desc " +
             "limit 5")
     List<Compound> selectNewsList();

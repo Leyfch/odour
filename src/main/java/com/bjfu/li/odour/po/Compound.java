@@ -49,6 +49,8 @@ public class Compound implements Serializable {
     private String massSpectrogram;
     private String massSpectrogramNist;
 
+    private String wine;
+
     @TableField(exist = false)
     private List<Ri> riList;
 

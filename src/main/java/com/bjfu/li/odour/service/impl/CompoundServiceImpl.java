@@ -71,7 +71,6 @@ public class CompoundServiceImpl extends ServiceImpl<CompoundMapper, Compound> i
 
     @Override
     public List<Compound> advancedSearch(Map<String, String> properties) {
-        System.out.println(properties.entrySet());
         if(properties.size()==0)
             return list();
         else if(properties.size()==1) {
@@ -117,7 +116,6 @@ public class CompoundServiceImpl extends ServiceImpl<CompoundMapper, Compound> i
             for(Compound c:compounds){
                 QueryWrapper<Ri> riQueryWrapper=new QueryWrapper<>();
                 riQueryWrapper.eq("compound_id",c.getId());
-
                 c.setRiList(riMapper.selectList(riQueryWrapper));
 
                 QueryWrapper<MR> mrQueryWrapper=new QueryWrapper<>();
@@ -129,6 +127,10 @@ public class CompoundServiceImpl extends ServiceImpl<CompoundMapper, Compound> i
 
     }
 
+
+    public Compound getById(Integer id){
+        return compoundMapper.selectOne(id);
+    }
 
     @Override
     public boolean save(Compound compound) {
@@ -162,7 +164,7 @@ public class CompoundServiceImpl extends ServiceImpl<CompoundMapper, Compound> i
             else{
                 int validNum=0;
                 for(Ri ri:compound.getRiList()){
-                    if(ri.getCompoundRi()==null||ri.getCompoundRi()==-1)
+                    if(ri.getCompoundRi()==null||ri.getCompoundRi()==0)
                         continue;
                     validNum++;
                     ri.setCompoundId(compound.getId());
@@ -179,7 +181,9 @@ public class CompoundServiceImpl extends ServiceImpl<CompoundMapper, Compound> i
             else{
                 int validNum=0;
                 for(MR mr:compound.getMrList()){
-                    if((mr.getMeasured()==null||mr.getMeasured().intValue()==-1)||(mr.getRelativeAbundance()==null||mr.getRelativeAbundance()==-1))
+                    if(mr.getMeasured().doubleValue()==0&&mr.getRelativeAbundance()==0)
+                        continue;
+                    if((mr.getMeasured()==null||mr.getMeasured().intValue()==0)||(mr.getRelativeAbundance()==null||mr.getRelativeAbundance()==0))
                         continue;
                     validNum++;
                     mr.setCompoundId(compound.getId());
@@ -244,7 +248,7 @@ public class CompoundServiceImpl extends ServiceImpl<CompoundMapper, Compound> i
                     compound.setMassSpectrogramNist(massSpectrogramNist);
                 }
             }
-            if(compound.getOdourThreshold().intValue()==-1)
+            if(compound.getOdourThreshold().intValue()==0)
                 compound.setOdourThreshold(null);
             compound.setUpdateTime(LocalDateTime.now());
             compoundMapper.updateById(compound);
@@ -258,7 +262,7 @@ public class CompoundServiceImpl extends ServiceImpl<CompoundMapper, Compound> i
             else{
                 int validNum=0;
                 for(Ri ri:compound.getRiList()){
-                    if(ri.getCompoundRi()==null||ri.getCompoundRi()==-1)
+                    if(ri.getCompoundRi()==null||ri.getCompoundRi()==0)
                         continue;
                     validNum++;
                     ri.setCompoundId(compound.getId());
@@ -297,7 +301,6 @@ public class CompoundServiceImpl extends ServiceImpl<CompoundMapper, Compound> i
                 if (oldMassSpectrogramNist.exists())
                     oldMassSpectrogramNist.delete();
             }
-
 
             QueryWrapper<MR> mrQueryWrapper=new QueryWrapper<>();
             mrQueryWrapper.eq("compound_id",id);

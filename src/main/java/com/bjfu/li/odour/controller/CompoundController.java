@@ -5,13 +5,19 @@ import com.bjfu.li.odour.common.pojo.SverResponse;
 import com.bjfu.li.odour.common.token.JWTUtils;
 import com.bjfu.li.odour.po.Compound;
 import com.bjfu.li.odour.po.Log;
+import com.bjfu.li.odour.po.MR;
 import com.bjfu.li.odour.service.impl.CompoundServiceImpl;
 import com.bjfu.li.odour.service.impl.LogServiceImpl;
+import com.bjfu.li.odour.utils.ExcelUtils;
 import com.bjfu.li.odour.vo.NewsVo;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +62,14 @@ public class CompoundController {
     public SverResponse<List<Compound>> advancedSearch(@RequestParam Map<String,String> properties){
         List<Compound> compounds=compoundService.advancedSearch(properties);
         return SverResponse.createRespBySuccess(compounds);
+    }
+
+    @GetMapping("/{id}")
+    public SverResponse<List<Compound>> getCompound(@PathVariable Integer id){
+        Compound compound=compoundService.getById(id);
+        List<Compound> compoundList=new ArrayList<>();
+        compoundList.add(compound);
+        return SverResponse.createRespBySuccess(compoundList);
     }
 
     /**
@@ -145,5 +159,21 @@ public class CompoundController {
             news.add(new NewsVo(c.getId(),c.getUpdateTime(),content));
         }
         return SverResponse.createRespBySuccess(news);
+    }
+
+    @PostMapping("/mr")
+    public SverResponse<List<MR>> readMRExcel(@RequestParam MultipartFile mrExcel) throws IOException {
+        String fileName = mrExcel.getOriginalFilename();
+        String uploadPath = System.getProperty("user.dir")+"/"+fileName;
+
+        File file = new File(uploadPath);
+        FileOutputStream out = new FileOutputStream(uploadPath);
+        out.write(mrExcel.getBytes());
+        out.flush();
+        out.close();
+        List<MR> mrList= ExcelUtils.readXls(uploadPath);
+        file.delete();
+
+        return SverResponse.createRespBySuccess(mrList);
     }
 }

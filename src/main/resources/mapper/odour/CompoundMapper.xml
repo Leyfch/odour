@@ -14,6 +14,7 @@
         <result column="chemical_structure" property="chemicalStructure"/>
         <result column="mass_spectrogram" property="massSpectrogram"/>
         <result column="mass_spectrogram_Nist" property="massSpectrogramNist"/>
+        <result column="wine" property="wine"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <collection property="riList" javaType="ArrayList" ofType="com.bjfu.li.odour.po.Ri">
@@ -52,10 +53,20 @@
         where c.id=ri.compound_id
         and c.id=mr.compound_id
         and c.id in (
-            select mr.compound_id
+            select m_r.compound_id
             from m_r
-            where (mr.measured between #{low} and #{high})
+            where (m_r.measured between #{low} and #{high})
         )
+    </select>
+
+    <select id="selectOne" resultMap="CompoundRiMap">
+        select c.*,
+            ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
+            mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
+        from compound as c,ri,m_r as mr
+        where c.id=ri.compound_id
+        and c.id=mr.compound_id
+        and c.id=#{id}
     </select>
 
     <select id="selectAll" resultMap="CompoundRiMap">
