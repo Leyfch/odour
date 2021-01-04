@@ -55,7 +55,7 @@ public class Compound implements Serializable {
     private List<Ri> riList;
 
     @TableField(exist = false)
-    private List<MR> mrList;
+    private List<Measured> mrList;
 
     @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;

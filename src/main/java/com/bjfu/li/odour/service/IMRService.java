@@ -1,6 +1,6 @@
 package com.bjfu.li.odour.service;
 
-import com.bjfu.li.odour.po.MR;
+import com.bjfu.li.odour.po.Measured;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author li
  * @since 2020-12-03
  */
-public interface IMRService extends IService<MR> {
+public interface IMRService extends IService<Measured> {
 
 }

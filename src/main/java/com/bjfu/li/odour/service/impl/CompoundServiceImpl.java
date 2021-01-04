@@ -1,8 +1,8 @@
 package com.bjfu.li.odour.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.bjfu.li.odour.mapper.MRMapper;
-import com.bjfu.li.odour.po.MR;
+import com.bjfu.li.odour.mapper.MeasuredMapper;
+import com.bjfu.li.odour.po.Measured;
 import com.bjfu.li.odour.mapper.RiMapper;
 import com.bjfu.li.odour.po.Compound;
 import com.bjfu.li.odour.mapper.CompoundMapper;
@@ -38,7 +38,7 @@ public class CompoundServiceImpl extends ServiceImpl<CompoundMapper, Compound> i
     RiMapper riMapper;
 
     @Resource
-    MRMapper mrMapper;
+    MeasuredMapper measuredMapper;
 
     @Value("${localImgPath}")
     String localImgPath;
@@ -118,9 +118,9 @@ public class CompoundServiceImpl extends ServiceImpl<CompoundMapper, Compound> i
                 riQueryWrapper.eq("compound_id",c.getId());
                 c.setRiList(riMapper.selectList(riQueryWrapper));
 
-                QueryWrapper<MR> mrQueryWrapper=new QueryWrapper<>();
+                QueryWrapper<Measured> mrQueryWrapper=new QueryWrapper<>();
                 mrQueryWrapper.eq("compound_id",c.getId());
-                c.setMrList(mrMapper.selectList(mrQueryWrapper));;
+                c.setMrList(measuredMapper.selectList(mrQueryWrapper));;
             }
             return compounds;
         }
@@ -177,20 +177,20 @@ public class CompoundServiceImpl extends ServiceImpl<CompoundMapper, Compound> i
 
             //离子碎片和相对丰度
             if(compound.getMrList().size()==0)
-                mrMapper.insert(new MR(null,null,null,compound.getId()));
+                measuredMapper.insert(new Measured(null,null,null,compound.getId()));
             else{
                 int validNum=0;
-                for(MR mr:compound.getMrList()){
-                    if(mr.getMeasured().doubleValue()==0&&mr.getRelativeAbundance()==0)
+                for(Measured measured :compound.getMrList()){
+                    if(measured.getMeasured().doubleValue()==0&& measured.getRelativeAbundance()==0)
                         continue;
-                    if((mr.getMeasured()==null||mr.getMeasured().intValue()==0)||(mr.getRelativeAbundance()==null||mr.getRelativeAbundance()==0))
+                    if((measured.getMeasured()==null|| measured.getMeasured().intValue()==0)||(measured.getRelativeAbundance()==null|| measured.getRelativeAbundance()==0))
                         continue;
                     validNum++;
-                    mr.setCompoundId(compound.getId());
-                    mrMapper.insert(mr);
+                    measured.setCompoundId(compound.getId());
+                    measuredMapper.insert(measured);
                 }
                 if(validNum==0)
-                    mrMapper.insert(new MR(null,null,null,compound.getId()));
+                    measuredMapper.insert(new Measured(null,null,null,compound.getId()));
             }
             return true;
         }catch (Exception e){
@@ -302,9 +302,9 @@ public class CompoundServiceImpl extends ServiceImpl<CompoundMapper, Compound> i
                     oldMassSpectrogramNist.delete();
             }
 
-            QueryWrapper<MR> mrQueryWrapper=new QueryWrapper<>();
+            QueryWrapper<Measured> mrQueryWrapper=new QueryWrapper<>();
             mrQueryWrapper.eq("compound_id",id);
-            mrMapper.delete(mrQueryWrapper);
+            measuredMapper.delete(mrQueryWrapper);
             QueryWrapper<Ri> riQueryWrapper=new QueryWrapper<>();
             riQueryWrapper.eq("compound_id",id);
             riMapper.delete(riQueryWrapper);

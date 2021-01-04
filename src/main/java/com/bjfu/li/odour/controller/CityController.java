@@ -36,4 +36,11 @@ public class CityController {
         List<City> cities=cityService.list();
         return SverResponse.createRespBySuccess(cities);
     }
+
+    @GetMapping("/total")
+    public SverResponse<String> getTotalNumbers(){
+        int total=cityService.count();
+        return SverResponse.createRespBySuccess(Integer.toString(total));
+    }
+
 }

@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class MR implements Serializable {
+public class Measured implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

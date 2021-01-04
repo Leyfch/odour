@@ -5,7 +5,7 @@ import com.bjfu.li.odour.common.pojo.SverResponse;
 import com.bjfu.li.odour.common.token.JWTUtils;
 import com.bjfu.li.odour.po.Compound;
 import com.bjfu.li.odour.po.Log;
-import com.bjfu.li.odour.po.MR;
+import com.bjfu.li.odour.po.Measured;
 import com.bjfu.li.odour.service.impl.CompoundServiceImpl;
 import com.bjfu.li.odour.service.impl.LogServiceImpl;
 import com.bjfu.li.odour.utils.ExcelUtils;
@@ -162,7 +162,7 @@ public class CompoundController {
     }
 
     @PostMapping("/mr")
-    public SverResponse<List<MR>> readMRExcel(@RequestParam MultipartFile mrExcel) throws IOException {
+    public SverResponse<List<Measured>> readMRExcel(@RequestParam MultipartFile mrExcel) throws IOException {
         String fileName = mrExcel.getOriginalFilename();
         String uploadPath = System.getProperty("user.dir")+"/"+fileName;
 
@@ -171,7 +171,7 @@ public class CompoundController {
         out.write(mrExcel.getBytes());
         out.flush();
         out.close();
-        List<MR> mrList= ExcelUtils.readXls(uploadPath);
+        List<Measured> mrList= ExcelUtils.readXls(uploadPath);
         file.delete();
 
         return SverResponse.createRespBySuccess(mrList);

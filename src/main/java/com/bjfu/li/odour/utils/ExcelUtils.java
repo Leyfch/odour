@@ -1,6 +1,6 @@
 package com.bjfu.li.odour.utils;
 
-import com.bjfu.li.odour.po.MR;
+import com.bjfu.li.odour.po.Measured;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -15,16 +15,16 @@ import java.util.List;
 
 public class ExcelUtils {
 
-    public static List<MR> readXls(String path) throws IOException {
+    public static List<Measured> readXls(String path) throws IOException {
         InputStream is = new FileInputStream(path);
         XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
-        List<MR> mrList = new ArrayList<>();
+        List<Measured> mrList = new ArrayList<>();
         XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
 
         for (int rowNum = 1; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
             XSSFRow xssfRow = xssfSheet.getRow(rowNum);
             if (xssfRow != null) {
-                MR mr = new MR();
+                Measured mr = new Measured();
                 XSSFCell measured = xssfRow.getCell(0);
                 XSSFCell relativeAbundance = xssfRow.getCell(1);
                 mr.setMeasured(BigDecimal.valueOf(measured.getNumericCellValue()));

@@ -1,7 +1,7 @@
 package com.bjfu.li.odour.service.impl;
 
-import com.bjfu.li.odour.po.MR;
-import com.bjfu.li.odour.mapper.MRMapper;
+import com.bjfu.li.odour.po.Measured;
+import com.bjfu.li.odour.mapper.MeasuredMapper;
 import com.bjfu.li.odour.service.IMRService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2020-12-03
  */
 @Service
-public class MRServiceImpl extends ServiceImpl<MRMapper, MR> implements IMRService {
+public class MRServiceImpl extends ServiceImpl<MeasuredMapper, Measured> implements IMRService {
 
 }

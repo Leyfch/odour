@@ -23,7 +23,7 @@
             <result column="chromatographic_column" property="chromatographicColumn"/>
             <result column="compound_id" property="compoundId"/>
         </collection>
-        <collection property="mrList" javaType="ArrayList" ofType="com.bjfu.li.odour.po.MR">
+        <collection property="mrList" javaType="ArrayList" ofType="com.bjfu.li.odour.po.Measured">
             <id column="mrid" property="id"/>
             <result column="measured" property="measured"/>
             <result column="relative_abundance" property="relativeAbundance"/>
@@ -34,10 +34,10 @@
     <select id="selectByRi" resultMap="CompoundRiMap" >
         select c.*,
             ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
-            mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
-        from compound as c,ri,m_r as mr
+            measured.id as mrid,measured.measured,measured.relative_abundance,measured.compound_id
+        from compound as c,ri,measured
         where c.id=ri.compound_id
-        and c.id=mr.compound_id
+        and c.id=measured.compound_id
         and c.id in (
             select ri.compound_id
             from ri
@@ -48,63 +48,63 @@
     <select id="selectByMeasured" resultMap="CompoundRiMap" >
         select c.*,
             ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
-            mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
-        from compound as c,ri,m_r as mr
+            measured.id as mrid,measured.measured,measured.relative_abundance,measured.compound_id
+        from compound as c,ri,measured
         where c.id=ri.compound_id
-        and c.id=mr.compound_id
+        and c.id=measured.compound_id
         and c.id in (
-            select m_r.compound_id
-            from m_r
-            where (m_r.measured between #{low} and #{high})
+            select measured.compound_id
+            from measured
+            where (measured.measured between #{low} and #{high})
         )
     </select>
 
     <select id="selectOne" resultMap="CompoundRiMap">
         select c.*,
             ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
-            mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
-        from compound as c,ri,m_r as mr
+            measured.id as mrid,measured.measured,measured.relative_abundance,measured.compound_id
+        from compound as c,ri,measured
         where c.id=ri.compound_id
-        and c.id=mr.compound_id
+        and c.id=measured.compound_id
         and c.id=#{id}
     </select>
 
     <select id="selectAll" resultMap="CompoundRiMap">
         select c.*,
             ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
-            mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
-        from compound as c,ri,m_r as mr
+            measured.id as mrid,measured.measured,measured.relative_abundance,measured.compound_id
+        from compound as c,ri,measured
         where c.id=ri.compound_id
-        and c.id=mr.compound_id
+        and c.id=measured.compound_id
     </select>
 
     <select id="selectByCompoundName" resultMap="CompoundRiMap">
         select c.*,
             ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
-            mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
-        from compound as c,ri,m_r as mr
+            measured.id as mrid,measured.measured,measured.relative_abundance,measured.compound_id
+        from compound as c,ri,measured
         where c.id=ri.compound_id
-        and c.id=mr.compound_id
+        and c.id=measured.compound_id
         and (compound_name like "%"#{name}"%" or synonym like "%"#{name}"%")
     </select>
 
     <select id="selectByCasNo" resultMap="CompoundRiMap">
         select c.*,
             ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
-            mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
-        from compound as c,ri,m_r as mr
+            measured.id as mrid,measured.measured,measured.relative_abundance,measured.compound_id
+        from compound as c,ri,measured
         where c.id=ri.compound_id
-        and c.id=mr.compound_id
+        and c.id=measured.compound_id
         and cas_no=#{casNo}
     </select>
 
     <select id="selectByOdourDescription" resultMap="CompoundRiMap">
         select c.*,
         ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id,
-        mr.id as mrid,mr.measured,mr.relative_abundance,mr.compound_id
-        from compound as c,ri,m_r as mr
+        measured.id as mrid,measured.measured,measured.relative_abundance,measured.compound_id
+        from compound as c,ri,measured
         where c.id=ri.compound_id
-        and c.id=mr.compound_id
+        and c.id=measured.compound_id
         <foreach collection="array" item="description" index="index"  separator=" " >
             and odour_description like "%"#{description}"%"
         </foreach>
@@ -112,7 +112,7 @@
 
     <select id="selectByProperties" resultMap="CompoundRiMap"  parameterType="map">
         select c.*,ri.id as rid,ri.compound_ri,ri.chromatographic_column,ri.compound_id
-        from compound as c,ri,m_r as mr
+        from compound as c,ri,measured
         where c.id=ri.compound_id
         <if test="_parameter.containsKey('compound_name')">
             and (compound_name like "%"#{compound_name}"%" or synonym like "%"#{compound_name}"%")
@@ -124,7 +124,7 @@
             and (ri.compound_ri between #{compound_ri}-100  and #{compound_ri}+100)
         </if>
         <if test="_parameter.containsKey('measured')">
-            and (mr.measured between #{measured}-100  and #{measured}+100)
+            and (measured.measured between #{measured}-100  and #{measured}+100)
         </if>
     </select>
 </mapper>
